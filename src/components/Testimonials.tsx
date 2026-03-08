@@ -1,4 +1,7 @@
-const testimonials = [
+import { useState, useEffect } from 'react';
+import { supabase } from '@/integrations/supabase/client';
+
+const fallbackTestimonials = [
   {
     quote: "Tanjim has a rare gift — he doesn't just take photos, he captures the feeling of a moment.",
     name: 'Ayesha Karim',
@@ -16,7 +19,22 @@ const testimonials = [
   },
 ];
 
+type Testimonial = { name: string; role: string; quote: string };
+
 export default function Testimonials() {
+  const [testimonials, setTestimonials] = useState<Testimonial[]>(fallbackTestimonials);
+
+  useEffect(() => {
+    const load = async () => {
+      const { data } = await supabase
+        .from('testimonials')
+        .select('name, role, quote')
+        .order('display_order', { ascending: true });
+      if (data && data.length > 0) setTestimonials(data);
+    };
+    load();
+  }, []);
+
   return (
     <section className="py-[var(--space-xl)] px-6 lg:px-8 bg-surface/40">
       <div className="max-w-[var(--max-width)] mx-auto">

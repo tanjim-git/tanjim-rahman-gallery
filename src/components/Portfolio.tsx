@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { supabase } from '@/integrations/supabase/client';
 import portfolio1 from '@/assets/portfolio-1.jpg';
 import portfolio2 from '@/assets/portfolio-2.jpg';
 import portfolio3 from '@/assets/portfolio-3.jpg';
@@ -12,7 +13,7 @@ import Lightbox from '@/components/Lightbox';
 
 const categories = ['All', 'Portraits', 'Weddings', 'Editorial', 'Landscapes'];
 
-const photos = [
+const fallbackPhotos = [
   { title: 'Golden Hour', category: 'Portraits', h: 340, img: portfolio1 },
   { title: 'The Ceremony', category: 'Weddings', h: 460, img: portfolio2 },
   { title: 'Vogue Dhaka', category: 'Editorial', h: 380, img: portfolio3 },
@@ -24,9 +25,29 @@ const photos = [
   { title: 'Intimacy', category: 'Portraits', h: 350, img: portfolio9 },
 ];
 
+type Photo = { title: string; category: string; h: number; img: string };
 export default function Portfolio() {
   const [active, setActive] = useState('All');
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  const [photos, setPhotos] = useState<Photo[]>(fallbackPhotos);
+
+  useEffect(() => {
+    const loadPhotos = async () => {
+      const { data } = await supabase
+        .from('portfolio_photos')
+        .select('*')
+        .order('display_order', { ascending: true });
+      if (data && data.length > 0) {
+        setPhotos(data.map((p) => ({
+          title: p.title,
+          category: p.category,
+          h: 340 + Math.floor(Math.random() * 180),
+          img: p.image_url,
+        })));
+      }
+    };
+    loadPhotos();
+  }, []);
 
   const filtered = active === 'All' ? photos : photos.filter((p) => p.category === active);
 
