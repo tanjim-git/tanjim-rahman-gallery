@@ -71,6 +71,7 @@ export default function Admin() {
       <div className="max-w-6xl mx-auto px-6 py-10">
         {activeTab === 'portfolio' && <AdminPortfolio />}
         {activeTab === 'testimonials' && <AdminTestimonials />}
+        {activeTab === 'blog' && <AdminBlog />}
         {activeTab === 'inquiries' && <AdminInquiries />}
       </div>
     </div>
