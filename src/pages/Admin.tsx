@@ -75,6 +75,7 @@ export default function Admin() {
         {activeTab === 'testimonials' && <AdminTestimonials />}
         {activeTab === 'blog' && <AdminBlog />}
         {activeTab === 'inquiries' && <AdminInquiries />}
+        {activeTab === 'settings' && <AdminSettings />}
       </div>
     </div>
   );
