@@ -1,4 +1,4 @@
-import { useEffect, useCallback } from 'react';
+import { useEffect, useCallback, useState } from 'react';
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
 import Portfolio from '@/components/Portfolio';
@@ -7,10 +7,12 @@ import Services from '@/components/Services';
 import Testimonials from '@/components/Testimonials';
 import Contact from '@/components/Contact';
 import Footer from '@/components/Footer';
+import LoadingScreen from '@/components/LoadingScreen';
 import { useCustomCursor } from '@/hooks/useCustomCursor';
 
 const Index = () => {
   useCustomCursor();
+  const [loading, setLoading] = useState(true);
 
   const initObserver = useCallback(() => {
     const observer = new IntersectionObserver(
@@ -28,7 +30,7 @@ const Index = () => {
   }, []);
 
   useEffect(() => {
-    // Initial + delayed pass for dynamically rendered elements
+    if (loading) return;
     const cleanup1 = initObserver();
     const timeout = setTimeout(() => {
       cleanup1?.();
@@ -38,21 +40,24 @@ const Index = () => {
       clearTimeout(timeout);
       cleanup1?.();
     };
-  }, [initObserver]);
+  }, [initObserver, loading]);
 
   return (
-    <div className="grain">
-      <Navbar />
-      <main>
-        <Hero />
-        <Portfolio />
-        <About />
-        <Services />
-        <Testimonials />
-        <Contact />
-      </main>
-      <Footer />
-    </div>
+    <>
+      {loading && <LoadingScreen onComplete={() => setLoading(false)} />}
+      <div className={`grain ${loading ? 'opacity-0' : 'animate-fade-in'}`}>
+        <Navbar />
+        <main>
+          <Hero />
+          <Portfolio />
+          <About />
+          <Services />
+          <Testimonials />
+          <Contact />
+        </main>
+        <Footer />
+      </div>
+    </>
   );
 };
 
