@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { toast } from 'sonner';
+import { supabase } from '@/integrations/supabase/client';
 
 const contactInfo = [
   { label: 'EMAIL', value: 'hello@tanjimrahman.com', href: 'mailto:hello@tanjimrahman.com' },
@@ -12,20 +13,42 @@ export default function Contact() {
   const [formData, setFormData] = useState({ name: '', email: '', service: '', date: '', message: '' });
   const [sending, setSending] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!formData.name.trim() || !formData.email.trim() || !formData.message.trim()) {
+    const name = formData.name.trim();
+    const email = formData.email.trim();
+    const message = formData.message.trim();
+
+    if (!name || !email || !message) {
       toast.error('Please fill in all required fields.');
       return;
     }
 
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      toast.error('Please enter a valid email address.');
+      return;
+    }
+
     setSending(true);
-    setTimeout(() => {
-      setSending(false);
+    try {
+      const { error } = await supabase.from('contact_submissions').insert({
+        name,
+        email,
+        service: formData.service || null,
+        preferred_date: formData.date || null,
+        message,
+      });
+
+      if (error) throw error;
+
       toast.success('Thank you! Your inquiry has been sent.');
       setFormData({ name: '', email: '', service: '', date: '', message: '' });
-    }, 1500);
+    } catch {
+      toast.error('Something went wrong. Please try again.');
+    } finally {
+      setSending(false);
+    }
   };
 
   const inputClass =
