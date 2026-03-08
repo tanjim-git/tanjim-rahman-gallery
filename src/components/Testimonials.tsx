@@ -18,23 +18,26 @@ const testimonials = [
 
 export default function Testimonials() {
   return (
-    <section className="py-[var(--space-xl)] px-6 bg-surface">
+    <section className="py-[var(--space-xl)] px-6 lg:px-8 bg-surface/40">
       <div className="max-w-[var(--max-width)] mx-auto">
         <div className="reveal text-center mb-16">
-          <span className="font-body text-[11px] tracking-[3px] uppercase text-primary">Kind Words</span>
-          <h2 className="font-display text-[clamp(36px,4vw,56px)] font-light text-warm-white mt-3">Testimonials</h2>
+          <span className="font-body text-[10px] tracking-[4px] uppercase text-primary font-medium">Kind Words</span>
+          <h2 className="font-display text-[clamp(36px,4vw,56px)] font-light text-warm-white mt-4">Testimonials</h2>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {testimonials.map((t, i) => (
-            <div key={i} className="reveal bg-background p-8 rounded-[var(--radius-sm)] flex flex-col gap-4">
-              <span className="font-display text-6xl text-primary/20 leading-none">"</span>
-              <p className="font-display italic text-[19px] leading-relaxed text-warm-white -mt-6">
+            <div
+              key={i}
+              className="reveal group bg-background border border-border/30 p-8 lg:p-10 rounded-[var(--radius-sm)] flex flex-col gap-5 hover:border-primary/15 transition-all duration-500"
+            >
+              <span className="font-display text-[72px] text-primary/15 leading-none select-none">"</span>
+              <p className="font-display italic text-[18px] leading-[1.7] text-warm-white -mt-10">
                 {t.quote}
               </p>
-              <div className="mt-auto pt-4 border-t border-border">
-                <div className="font-body text-[13px] text-warm-white">{t.name}</div>
-                <div className="font-body text-[11px] text-text-muted-warm tracking-[1px] uppercase">{t.role}</div>
+              <div className="mt-auto pt-6 border-t border-border/30">
+                <div className="font-body text-[13px] font-medium text-warm-white tracking-wide">{t.name}</div>
+                <div className="font-body text-[10px] text-text-muted-warm tracking-[2px] uppercase mt-1">{t.role}</div>
               </div>
             </div>
           ))}
