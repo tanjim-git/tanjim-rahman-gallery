@@ -29,6 +29,25 @@ type Photo = { title: string; category: string; h: number; img: string };
 export default function Portfolio() {
   const [active, setActive] = useState('All');
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  const [photos, setPhotos] = useState<Photo[]>(fallbackPhotos);
+
+  useEffect(() => {
+    const loadPhotos = async () => {
+      const { data } = await supabase
+        .from('portfolio_photos')
+        .select('*')
+        .order('display_order', { ascending: true });
+      if (data && data.length > 0) {
+        setPhotos(data.map((p) => ({
+          title: p.title,
+          category: p.category,
+          h: 340 + Math.floor(Math.random() * 180),
+          img: p.image_url,
+        })));
+      }
+    };
+    loadPhotos();
+  }, []);
 
   const filtered = active === 'All' ? photos : photos.filter((p) => p.category === active);
 
