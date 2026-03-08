@@ -1,4 +1,5 @@
 import aboutImg from '@/assets/about-portrait.jpg';
+import { useParallax } from '@/hooks/useParallax';
 
 const stats = [
   { value: '10+', label: 'Years' },
@@ -7,22 +8,38 @@ const stats = [
 ];
 
 export default function About() {
+  const { ref: imageRef, offset: imageOffset } = useParallax(0.1);
+  const { ref: borderRef, offset: borderOffset } = useParallax(0.16);
+  const { ref: textRef, offset: textOffset } = useParallax(0.05);
+
   return (
-    <section id="about" className="py-[var(--space-xl)] px-6 lg:px-8 bg-surface/50">
+    <section id="about" className="py-[var(--space-xl)] px-6 lg:px-8 bg-surface/50 overflow-hidden">
       <div className="max-w-[var(--max-width)] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
         {/* Left - Image */}
         <div className="reveal relative mx-auto lg:mx-0">
-          <div className="relative w-full max-w-[460px] aspect-square rounded-[var(--radius-sm)] overflow-hidden shadow-[0_30px_60px_-15px_rgba(0,0,0,0.5)]">
+          <div
+            ref={imageRef}
+            className="relative w-full max-w-[460px] aspect-square rounded-[var(--radius-sm)] overflow-hidden shadow-[0_30px_60px_-15px_rgba(0,0,0,0.5)] will-change-transform"
+            style={{ transform: `translateY(${imageOffset}px)` }}
+          >
             <img src={aboutImg} alt="Portrait of Tanjim Rahman" className="w-full h-full object-cover" loading="lazy" />
           </div>
-          {/* Offset gold border */}
-          <div className="absolute top-5 left-5 w-full max-w-[460px] aspect-square border border-primary/20 rounded-[var(--radius-sm)] -z-10" />
+          {/* Offset gold border - moves at different speed for depth */}
+          <div
+            ref={borderRef}
+            className="absolute top-5 left-5 w-full max-w-[460px] aspect-square border border-primary/20 rounded-[var(--radius-sm)] -z-10 will-change-transform"
+            style={{ transform: `translateY(${borderOffset}px)` }}
+          />
           {/* Small accent */}
           <div className="absolute -bottom-4 -right-4 w-16 h-16 border border-primary/10 rounded-[var(--radius-sm)] hidden lg:block" />
         </div>
 
         {/* Right - Text */}
-        <div className="stagger visible flex flex-col gap-7">
+        <div
+          ref={textRef}
+          className="stagger visible flex flex-col gap-7 will-change-transform"
+          style={{ transform: `translateY(${textOffset}px)` }}
+        >
           <h2 className="font-display text-[clamp(32px,3.5vw,48px)] font-light italic text-warm-white leading-[1.15]">
             Photography is<br />the art of<br />frozen time.
           </h2>
