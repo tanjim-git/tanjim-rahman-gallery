@@ -9,10 +9,8 @@ import Contact from '@/components/Contact';
 import JournalPreview from '@/components/JournalPreview';
 import Footer from '@/components/Footer';
 import LoadingScreen from '@/components/LoadingScreen';
-import { useCustomCursor } from '@/hooks/useCustomCursor';
 
 const Index = () => {
-  useCustomCursor();
   const [loading, setLoading] = useState(true);
 
   const initObserver = useCallback(() => {
