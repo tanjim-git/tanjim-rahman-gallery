@@ -4,10 +4,12 @@ import { useNavigate } from 'react-router-dom';
 import AdminPortfolio from '@/components/admin/AdminPortfolio';
 import AdminTestimonials from '@/components/admin/AdminTestimonials';
 import AdminInquiries from '@/components/admin/AdminInquiries';
+import AdminBlog from '@/components/admin/AdminBlog';
 
 const tabs = [
   { id: 'portfolio', label: 'Portfolio' },
   { id: 'testimonials', label: 'Testimonials' },
+  { id: 'blog', label: 'Blog' },
   { id: 'inquiries', label: 'Inquiries' },
 ] as const;
 
@@ -69,6 +71,7 @@ export default function Admin() {
       <div className="max-w-6xl mx-auto px-6 py-10">
         {activeTab === 'portfolio' && <AdminPortfolio />}
         {activeTab === 'testimonials' && <AdminTestimonials />}
+        {activeTab === 'blog' && <AdminBlog />}
         {activeTab === 'inquiries' && <AdminInquiries />}
       </div>
     </div>

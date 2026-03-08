@@ -6,6 +6,7 @@ import About from '@/components/About';
 import Services from '@/components/Services';
 import Testimonials from '@/components/Testimonials';
 import Contact from '@/components/Contact';
+import JournalPreview from '@/components/JournalPreview';
 import Footer from '@/components/Footer';
 import LoadingScreen from '@/components/LoadingScreen';
 import { useCustomCursor } from '@/hooks/useCustomCursor';
@@ -53,6 +54,7 @@ const Index = () => {
           <About />
           <Services />
           <Testimonials />
+          <JournalPreview />
           <Contact />
         </main>
         <Footer />
