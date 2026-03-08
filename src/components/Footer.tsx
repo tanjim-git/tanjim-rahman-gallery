@@ -1,4 +1,9 @@
 const navLinks = ['Work', 'About', 'Services', 'Contact'];
+const socials = [
+  { name: 'Instagram', href: 'https://instagram.com/tanjimrahman.photo' },
+  { name: 'Facebook', href: '#' },
+  { name: 'Behance', href: '#' },
+];
 
 export default function Footer() {
   const scrollTo = (id: string) => {
@@ -6,43 +11,61 @@ export default function Footer() {
   };
 
   return (
-    <footer className="border-t border-border py-16 px-6">
+    <footer className="border-t border-border/30 pt-20 pb-10 px-6 lg:px-8">
       <div className="max-w-[var(--max-width)] mx-auto">
-        <div className="flex flex-col items-center gap-6 text-center">
-          <span className="font-display text-[24px] tracking-[4px] text-warm-white">T·R</span>
-          <p className="font-body text-[13px] tracking-[2px] text-text-muted-warm italic">
-            Light. Story. Emotion.
-          </p>
-
-          <div className="flex gap-6 mt-4">
-            {navLinks.map((link) => (
-              <button
-                key={link}
-                onClick={() => scrollTo(link.toLowerCase())}
-                className="font-body text-[11px] tracking-[1.5px] uppercase text-text-muted-warm hover:text-primary transition-colors"
-              >
-                {link}
-              </button>
-            ))}
+        {/* Top area */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-16">
+          {/* Brand */}
+          <div>
+            <span className="font-display text-[28px] tracking-[5px] text-warm-white">T·R</span>
+            <p className="font-display italic text-[14px] text-text-muted-warm mt-3">
+              Light. Story. Emotion.
+            </p>
           </div>
 
-          {/* Social icons placeholder */}
-          <div className="flex gap-6 mt-2">
-            {['Instagram', 'Facebook', 'Behance'].map((s) => (
-              <span key={s} className="font-body text-[11px] tracking-[1px] uppercase text-text-muted-warm hover:text-primary transition-colors cursor-none">
-                {s}
-              </span>
-            ))}
+          {/* Quick links */}
+          <div>
+            <span className="font-body text-[9px] tracking-[3px] uppercase text-text-muted-warm/50 mb-4 block">Navigation</span>
+            <div className="flex flex-col gap-3">
+              {navLinks.map((link) => (
+                <button
+                  key={link}
+                  onClick={() => scrollTo(link.toLowerCase())}
+                  className="text-left font-body text-[13px] text-text-muted-warm hover:text-primary transition-colors duration-300"
+                >
+                  {link}
+                </button>
+              ))}
+            </div>
           </div>
 
-          <div className="w-full border-t border-border mt-8 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-            <span className="font-body text-[11px] text-text-muted-warm">
-              © 2025 Tanjim Rahman. All rights reserved.
-            </span>
-            <span className="font-body text-[11px] text-text-muted-warm italic">
-              Designed with intention. Shot with heart.
-            </span>
+          {/* Social */}
+          <div>
+            <span className="font-body text-[9px] tracking-[3px] uppercase text-text-muted-warm/50 mb-4 block">Follow</span>
+            <div className="flex flex-col gap-3">
+              {socials.map((s) => (
+                <a
+                  key={s.name}
+                  href={s.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-body text-[13px] text-text-muted-warm hover:text-primary transition-colors duration-300"
+                >
+                  {s.name}
+                </a>
+              ))}
+            </div>
           </div>
+        </div>
+
+        {/* Bottom row */}
+        <div className="border-t border-border/20 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+          <span className="font-body text-[11px] text-text-muted-warm/50">
+            © 2025 Tanjim Rahman. All rights reserved.
+          </span>
+          <span className="font-body text-[11px] text-text-muted-warm/50 italic">
+            Designed with intention. Shot with heart.
+          </span>
         </div>
       </div>
     </footer>
