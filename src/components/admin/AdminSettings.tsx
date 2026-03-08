@@ -10,6 +10,7 @@ interface Settings {
 const sections = [
   { key: 'hero', label: 'Hero Section' },
   { key: 'about', label: 'About Section' },
+  { key: 'services', label: 'Pricing' },
   { key: 'contact', label: 'Contact Info' },
   { key: 'footer', label: 'Footer' },
 ];
@@ -59,6 +60,69 @@ export default function AdminSettings() {
       const stats = [...(prev.about?.stats || [])];
       stats[index] = { ...stats[index], [field]: value };
       return { ...prev, about: { ...prev.about, stats } };
+    });
+  };
+
+  // Services helpers
+  const updatePackageField = (pkgIdx: number, field: string, value: string) => {
+    setSettings((prev) => {
+      const packages = [...(prev.services?.packages || [])];
+      packages[pkgIdx] = { ...packages[pkgIdx], [field]: value };
+      return { ...prev, services: { ...prev.services, packages } };
+    });
+  };
+
+  const updateTierField = (pkgIdx: number, tierIdx: number, field: string, value: any) => {
+    setSettings((prev) => {
+      const packages = [...(prev.services?.packages || [])];
+      const tiers = [...(packages[pkgIdx]?.tiers || [])];
+      tiers[tierIdx] = { ...tiers[tierIdx], [field]: value };
+      packages[pkgIdx] = { ...packages[pkgIdx], tiers };
+      return { ...prev, services: { ...prev.services, packages } };
+    });
+  };
+
+  const updateTierFeature = (pkgIdx: number, tierIdx: number, featureIdx: number, value: string) => {
+    setSettings((prev) => {
+      const packages = [...(prev.services?.packages || [])];
+      const tiers = [...(packages[pkgIdx]?.tiers || [])];
+      const features = [...(tiers[tierIdx]?.features || [])];
+      features[featureIdx] = value;
+      tiers[tierIdx] = { ...tiers[tierIdx], features };
+      packages[pkgIdx] = { ...packages[pkgIdx], tiers };
+      return { ...prev, services: { ...prev.services, packages } };
+    });
+  };
+
+  const addTierFeature = (pkgIdx: number, tierIdx: number) => {
+    setSettings((prev) => {
+      const packages = [...(prev.services?.packages || [])];
+      const tiers = [...(packages[pkgIdx]?.tiers || [])];
+      const features = [...(tiers[tierIdx]?.features || []), ''];
+      tiers[tierIdx] = { ...tiers[tierIdx], features };
+      packages[pkgIdx] = { ...packages[pkgIdx], tiers };
+      return { ...prev, services: { ...prev.services, packages } };
+    });
+  };
+
+  const removeTierFeature = (pkgIdx: number, tierIdx: number, featureIdx: number) => {
+    setSettings((prev) => {
+      const packages = [...(prev.services?.packages || [])];
+      const tiers = [...(packages[pkgIdx]?.tiers || [])];
+      const features = (tiers[tierIdx]?.features || []).filter((_: any, i: number) => i !== featureIdx);
+      tiers[tierIdx] = { ...tiers[tierIdx], features };
+      packages[pkgIdx] = { ...packages[pkgIdx], tiers };
+      return { ...prev, services: { ...prev.services, packages } };
+    });
+  };
+
+  const togglePopular = (pkgIdx: number, tierIdx: number) => {
+    setSettings((prev) => {
+      const packages = [...(prev.services?.packages || [])];
+      const tiers = [...(packages[pkgIdx]?.tiers || [])];
+      tiers[tierIdx] = { ...tiers[tierIdx], popular: !tiers[tierIdx].popular };
+      packages[pkgIdx] = { ...packages[pkgIdx], tiers };
+      return { ...prev, services: { ...prev.services, packages } };
     });
   };
 
@@ -120,6 +184,68 @@ export default function AdminSettings() {
               ))}
             </div>
           </>
+        )}
+
+        {activeSection === 'services' && (
+          <div className="space-y-8">
+            {(current.packages || []).map((pkg: any, pkgIdx: number) => (
+              <div key={pkgIdx} className="space-y-4">
+                <div className="border-b border-border/20 pb-2">
+                  <span className="font-body text-[10px] tracking-[2px] uppercase text-primary">Package {pkg.num}</span>
+                </div>
+                <div className="grid grid-cols-2 gap-3">
+                  <Field label="Name" value={pkg.name || ''} onChange={(v) => updatePackageField(pkgIdx, 'name', v)} />
+                  <Field label="Tagline" value={pkg.tagline || ''} onChange={(v) => updatePackageField(pkgIdx, 'tagline', v)} />
+                </div>
+
+                {(pkg.tiers || []).map((tier: any, tierIdx: number) => (
+                  <div key={tierIdx} className="bg-background/50 border border-border/20 rounded-[var(--radius-sm)] p-4 space-y-3">
+                    <div className="flex items-center justify-between">
+                      <span className="font-body text-[10px] tracking-[2px] uppercase text-text-muted-warm">{tier.tier} Tier</span>
+                      <label className="flex items-center gap-2 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={!!tier.popular}
+                          onChange={() => togglePopular(pkgIdx, tierIdx)}
+                          className="accent-[hsl(var(--primary))]"
+                        />
+                        <span className="font-body text-[10px] text-text-muted-warm">Popular</span>
+                      </label>
+                    </div>
+                    <div className="grid grid-cols-2 gap-3">
+                      <Field label="Tier Name" value={tier.tier || ''} onChange={(v) => updateTierField(pkgIdx, tierIdx, 'tier', v)} />
+                      <Field label="Price" value={tier.price || ''} onChange={(v) => updateTierField(pkgIdx, tierIdx, 'price', v)} />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="font-body text-[10px] tracking-[2px] uppercase text-text-muted-warm block">Features</label>
+                      {(tier.features || []).map((f: string, fIdx: number) => (
+                        <div key={fIdx} className="flex gap-2">
+                          <input
+                            value={f}
+                            onChange={(e) => updateTierFeature(pkgIdx, tierIdx, fIdx, e.target.value)}
+                            className="flex-1 bg-background border border-border/50 text-warm-white font-body text-sm px-4 py-2 rounded-[var(--radius-sm)] focus:border-primary/50 focus:outline-none"
+                          />
+                          <button
+                            onClick={() => removeTierFeature(pkgIdx, tierIdx, fIdx)}
+                            className="text-text-muted-warm hover:text-red-400 transition-colors px-2 text-sm"
+                            title="Remove feature"
+                          >
+                            ×
+                          </button>
+                        </div>
+                      ))}
+                      <button
+                        onClick={() => addTierFeature(pkgIdx, tierIdx)}
+                        className="font-body text-[10px] tracking-[1px] text-primary hover:text-warm-white transition-colors"
+                      >
+                        + Add Feature
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
         )}
 
         {activeSection === 'contact' && (
