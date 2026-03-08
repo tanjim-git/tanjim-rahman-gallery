@@ -5,12 +5,14 @@ import AdminPortfolio from '@/components/admin/AdminPortfolio';
 import AdminTestimonials from '@/components/admin/AdminTestimonials';
 import AdminInquiries from '@/components/admin/AdminInquiries';
 import AdminBlog from '@/components/admin/AdminBlog';
+import AdminSettings from '@/components/admin/AdminSettings';
 
 const tabs = [
   { id: 'portfolio', label: 'Portfolio' },
   { id: 'testimonials', label: 'Testimonials' },
   { id: 'blog', label: 'Blog' },
   { id: 'inquiries', label: 'Inquiries' },
+  { id: 'settings', label: 'Site Settings' },
 ] as const;
 
 type TabId = typeof tabs[number]['id'];
