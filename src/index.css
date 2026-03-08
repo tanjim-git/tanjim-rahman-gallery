@@ -92,13 +92,9 @@
     color: hsl(var(--color-text));
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    cursor: none;
   }
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-display);
-  }
-  a, button {
-    cursor: none;
   }
 }
 
