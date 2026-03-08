@@ -1,3 +1,5 @@
+import { useRef } from 'react';
+
 interface Photo {
   title: string;
   category: string;
