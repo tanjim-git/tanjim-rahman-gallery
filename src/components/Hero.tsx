@@ -1,21 +1,35 @@
 import heroImg from '@/assets/hero-portrait.jpg';
+import { useParallax } from '@/hooks/useParallax';
 
 export default function Hero() {
   const scrollTo = (id: string) => {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
   };
 
+  const { ref: imageRef, offset: imageOffset } = useParallax(0.12);
+  const { ref: textRef, offset: textOffset } = useParallax(0.06);
+  const { ref: glowRef, offset: glowOffset } = useParallax(-0.08);
+  const { ref: accentRef, offset: accentOffset } = useParallax(0.18);
+
   return (
     <section className="relative min-h-screen flex items-center overflow-hidden">
       {/* Subtle radial glow behind hero */}
       <div
-        className="absolute top-1/2 left-1/3 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full pointer-events-none"
-        style={{ background: 'radial-gradient(circle, hsl(37 46% 61% / 0.04) 0%, transparent 70%)' }}
+        ref={glowRef}
+        className="absolute top-1/2 left-1/3 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full pointer-events-none will-change-transform"
+        style={{
+          background: 'radial-gradient(circle, hsl(37 46% 61% / 0.04) 0%, transparent 70%)',
+          transform: `translate(-50%, calc(-50% + ${glowOffset}px))`,
+        }}
       />
 
       <div className="max-w-[var(--max-width)] mx-auto w-full px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-[55%_45%] gap-12 lg:gap-16 items-center pt-[calc(var(--nav-height)+20px)]">
         {/* Left */}
-        <div className="stagger visible flex flex-col gap-7 py-12 lg:py-0">
+        <div
+          ref={textRef}
+          className="stagger visible flex flex-col gap-7 py-12 lg:py-0 will-change-transform"
+          style={{ transform: `translateY(${textOffset}px)` }}
+        >
           <div className="flex items-center gap-4">
             <div className="w-10 h-[1px] bg-primary" />
             <span className="font-body text-[10px] tracking-[3.5px] uppercase text-primary font-medium">
@@ -50,7 +64,7 @@ export default function Hero() {
         </div>
 
         {/* Right */}
-        <div className="relative flex justify-center lg:justify-end">
+        <div ref={imageRef} className="relative flex justify-center lg:justify-end will-change-transform" style={{ transform: `translateY(${imageOffset}px)` }}>
           <div className="relative w-full max-w-[420px] aspect-[3/4] rounded-[var(--radius-sm)] overflow-hidden shadow-[0_40px_80px_-20px_rgba(0,0,0,0.6)]">
             <img
               src={heroImg}
@@ -64,7 +78,11 @@ export default function Hero() {
             <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-background/40 to-transparent pointer-events-none" />
           </div>
           {/* Floating accent element */}
-          <div className="absolute -bottom-6 -left-6 w-24 h-24 border border-primary/10 rounded-[var(--radius-sm)] hidden lg:block" />
+          <div
+            ref={accentRef}
+            className="absolute -bottom-6 -left-6 w-24 h-24 border border-primary/10 rounded-[var(--radius-sm)] hidden lg:block will-change-transform"
+            style={{ transform: `translateY(${accentOffset}px)` }}
+          />
         </div>
       </div>
 
