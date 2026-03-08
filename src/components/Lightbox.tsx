@@ -1,3 +1,5 @@
+import { useRef } from 'react';
+
 interface Photo {
   title: string;
   category: string;
@@ -14,11 +16,35 @@ interface LightboxProps {
 
 export default function Lightbox({ photos, currentIndex, onClose, onNext, onPrev }: LightboxProps) {
   const photo = photos[currentIndex];
+  const touchStart = useRef<number | null>(null);
+  const touchDelta = useRef<number>(0);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStart.current = e.touches[0].clientX;
+    touchDelta.current = 0;
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (touchStart.current !== null) {
+      touchDelta.current = e.touches[0].clientX - touchStart.current;
+    }
+  };
+
+  const handleTouchEnd = () => {
+    const threshold = 50;
+    if (touchDelta.current > threshold) onPrev();
+    else if (touchDelta.current < -threshold) onNext();
+    touchStart.current = null;
+    touchDelta.current = 0;
+  };
 
   return (
     <div
       className="fixed inset-0 z-[9999] flex items-center justify-center"
       onClick={onClose}
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
     >
       {/* Backdrop */}
       <div className="absolute inset-0 bg-background/95 backdrop-blur-sm" />
