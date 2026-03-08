@@ -203,7 +203,7 @@
   pointer-events: none;
   z-index: 99999;
   transform: translate(-50%, -50%);
-  transition: width 0.15s, height 0.15s;
+  transition: width 0.2s ease, height 0.2s ease, background 0.2s ease, opacity 0.2s ease;
 }
 .cursor-ring {
   width: 36px;
@@ -214,7 +214,47 @@
   pointer-events: none;
   z-index: 99998;
   transform: translate(-50%, -50%);
-  transition: width 0.3s ease, height 0.3s ease, border-color 0.3s ease;
+  transition: width 0.3s ease, height 0.3s ease, border-color 0.3s ease, background 0.3s ease;
+}
+
+/* Interactive hover state (buttons, links) */
+.cursor-dot.cursor-active {
+  width: 10px;
+  height: 10px;
+  background: hsl(var(--color-accent) / 0.8);
+}
+.cursor-ring.cursor-active {
+  width: 48px;
+  height: 48px;
+  border-color: hsl(var(--color-accent) / 0.6);
+}
+
+/* Portfolio hover state — expands ring with "View" label */
+.cursor-dot.cursor-view {
+  width: 0;
+  height: 0;
+  opacity: 0;
+}
+.cursor-ring.cursor-view {
+  width: 72px;
+  height: 72px;
+  background: hsl(var(--color-accent) / 0.12);
+  border-color: hsl(var(--color-accent) / 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.cursor-ring.cursor-view::after {
+  content: 'View';
+  font-family: var(--font-body);
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: hsl(var(--color-accent));
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 @media (max-width: 768px) {
