@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-
+import ThemeToggle from './ThemeToggle';
 const navLinks = ['Work', 'About', 'Services', 'Contact'];
 
 export default function Navbar() {
