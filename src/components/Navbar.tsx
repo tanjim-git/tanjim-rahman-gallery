@@ -151,13 +151,23 @@ export default function Navbar() {
             </button>
           );
         })}
+        <div
+          className="flex items-center gap-6"
+          style={{
+            transform: menuOpen ? 'translateY(0) scale(1)' : 'translateY(30px) scale(0.95)',
+            opacity: menuOpen ? 1 : 0,
+            transition: 'all 0.5s cubic-bezier(0.23,1,0.32,1) 0.4s',
+          }}
+        >
+          <ThemeToggle />
+        </div>
         <button
           onClick={() => scrollTo('contact')}
           className="border border-primary/60 text-primary px-10 py-3 font-body text-[11px] tracking-[2px] uppercase mt-4 hover:bg-accent-dim transition-all duration-300"
           style={{
             transform: menuOpen ? 'translateY(0) scale(1)' : 'translateY(30px) scale(0.95)',
             opacity: menuOpen ? 1 : 0,
-            transition: 'all 0.5s cubic-bezier(0.23,1,0.32,1) 0.45s',
+            transition: 'all 0.5s cubic-bezier(0.23,1,0.32,1) 0.5s',
           }}
         >
           Book a Session
