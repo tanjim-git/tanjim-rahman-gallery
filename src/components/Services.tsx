@@ -1,4 +1,5 @@
 import { useSiteSettings } from '@/hooks/useSiteSettings';
+import ScrollReveal, { StaggerContainer, StaggerItem } from '@/components/ScrollReveal';
 
 const defaultPackages = [
   {
@@ -44,7 +45,7 @@ export default function Services() {
   return (
     <section id="services" className="py-[var(--space-xl)] px-6 lg:px-8">
       <div className="max-w-[var(--max-width)] mx-auto">
-        <div className="reveal text-center mb-20">
+        <ScrollReveal className="text-center mb-20">
           <span className="font-body text-[10px] tracking-[4px] uppercase text-primary font-medium">Investment</span>
           <h2 className="font-display text-[clamp(36px,4vw,56px)] font-light text-warm-white mt-4">
             Packages & Pricing
@@ -52,21 +53,23 @@ export default function Services() {
           <p className="font-body text-[14px] text-text-muted-warm mt-4 max-w-lg mx-auto leading-relaxed">
             Every session is crafted with intention — tailored to your story, your vision, your moment. Choose a package or let's create something custom.
           </p>
-        </div>
+        </ScrollReveal>
 
         {packages.map((pkg: any, pkgIdx: number) => (
-          <div key={pkg.num} className={`reveal ${pkgIdx > 0 ? 'mt-24' : ''}`}>
-            <div className="flex items-center gap-6 mb-10">
-              <span className="font-display text-[20px] text-text-muted-warm/40 tracking-wider">{pkg.num}</span>
-              <div>
-                <h3 className="font-display italic text-[28px] text-warm-white leading-tight">{pkg.name}</h3>
-                <p className="font-body text-[12px] text-text-muted-warm mt-1">{pkg.tagline}</p>
+          <div key={pkg.num} className={pkgIdx > 0 ? 'mt-24' : ''}>
+            <ScrollReveal delay={0.1}>
+              <div className="flex items-center gap-6 mb-10">
+                <span className="font-display text-[20px] text-text-muted-warm/40 tracking-wider">{pkg.num}</span>
+                <div>
+                  <h3 className="font-display italic text-[28px] text-warm-white leading-tight">{pkg.name}</h3>
+                  <p className="font-body text-[12px] text-text-muted-warm mt-1">{pkg.tagline}</p>
+                </div>
               </div>
-            </div>
+            </ScrollReveal>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            <StaggerContainer className="grid grid-cols-1 md:grid-cols-3 gap-5" staggerDelay={0.12}>
               {(pkg.tiers || []).map((tier: any) => (
-                <div
+                <StaggerItem
                   key={tier.tier}
                   className={`group relative bg-background border rounded-[var(--radius-sm)] p-8 lg:p-10 flex flex-col transition-all duration-500 hover:border-primary/25 ${
                     tier.popular ? 'border-primary/30 ring-1 ring-primary/10' : 'border-border/30'
@@ -101,17 +104,17 @@ export default function Services() {
                   >
                     {tier.price === 'Custom' ? 'Get a Quote' : 'Book Now'}
                   </button>
-                </div>
+                </StaggerItem>
               ))}
-            </div>
+            </StaggerContainer>
           </div>
         ))}
 
-        <div className="reveal mt-16 text-center">
+        <ScrollReveal className="mt-16 text-center" delay={0.2}>
           <p className="font-body text-[13px] text-text-muted-warm leading-relaxed max-w-md mx-auto">
             Don't see what you need? Every project is unique. <button onClick={() => scrollTo('contact')} className="text-primary hover:text-warm-white transition-colors">Let's discuss a custom package</button> tailored to your vision.
           </p>
-        </div>
+        </ScrollReveal>
       </div>
     </section>
   );
