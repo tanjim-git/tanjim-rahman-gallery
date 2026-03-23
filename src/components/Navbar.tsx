@@ -89,13 +89,16 @@ export default function Navbar() {
             })}
           </div>
 
-          {/* CTA - desktop */}
-          <button
-            onClick={() => scrollTo('contact')}
-            className="hidden md:block border border-primary/60 text-primary px-[24px] py-[10px] font-body text-[10px] font-medium tracking-[2px] uppercase rounded-[2px] hover:bg-accent-dim hover:border-primary transition-all duration-300"
-          >
-            Book a Session
-          </button>
+          {/* Theme toggle + CTA - desktop */}
+          <div className="hidden md:flex items-center gap-4">
+            <ThemeToggle />
+            <button
+              onClick={() => scrollTo('contact')}
+              className="border border-primary/60 text-primary px-[24px] py-[10px] font-body text-[10px] font-medium tracking-[2px] uppercase rounded-[2px] hover:bg-accent-dim hover:border-primary transition-all duration-300"
+            >
+              Book a Session
+            </button>
+          </div>
 
           {/* Hamburger - mobile */}
           <button
