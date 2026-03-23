@@ -50,10 +50,10 @@ export default function Navbar() {
         className="fixed top-0 left-0 w-full z-50 transition-all duration-500"
         style={{
           height: 'var(--nav-height)',
-          background: scrolled ? 'rgba(13,12,11,0.92)' : 'transparent',
+          background: scrolled ? 'hsl(var(--background) / 0.92)' : 'transparent',
           backdropFilter: scrolled ? 'blur(20px)' : 'none',
           WebkitBackdropFilter: scrolled ? 'blur(20px)' : 'none',
-          borderBottom: scrolled ? '1px solid rgba(255,248,230,0.05)' : '1px solid transparent',
+          borderBottom: scrolled ? '1px solid hsl(var(--border))' : '1px solid transparent',
         }}
       >
         <div className="max-w-[var(--max-width)] mx-auto h-full flex items-center justify-between px-6 lg:px-8">
