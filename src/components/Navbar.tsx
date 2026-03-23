@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-
+import ThemeToggle from './ThemeToggle';
 const navLinks = ['Work', 'About', 'Services', 'Contact'];
 
 export default function Navbar() {
@@ -50,10 +50,10 @@ export default function Navbar() {
         className="fixed top-0 left-0 w-full z-50 transition-all duration-500"
         style={{
           height: 'var(--nav-height)',
-          background: scrolled ? 'rgba(13,12,11,0.92)' : 'transparent',
+          background: scrolled ? 'hsl(var(--background) / 0.92)' : 'transparent',
           backdropFilter: scrolled ? 'blur(20px)' : 'none',
           WebkitBackdropFilter: scrolled ? 'blur(20px)' : 'none',
-          borderBottom: scrolled ? '1px solid rgba(255,248,230,0.05)' : '1px solid transparent',
+          borderBottom: scrolled ? '1px solid hsl(var(--border))' : '1px solid transparent',
         }}
       >
         <div className="max-w-[var(--max-width)] mx-auto h-full flex items-center justify-between px-6 lg:px-8">
@@ -89,13 +89,16 @@ export default function Navbar() {
             })}
           </div>
 
-          {/* CTA - desktop */}
-          <button
-            onClick={() => scrollTo('contact')}
-            className="hidden md:block border border-primary/60 text-primary px-[24px] py-[10px] font-body text-[10px] font-medium tracking-[2px] uppercase rounded-[2px] hover:bg-accent-dim hover:border-primary transition-all duration-300"
-          >
-            Book a Session
-          </button>
+          {/* Theme toggle + CTA - desktop */}
+          <div className="hidden md:flex items-center gap-4">
+            <ThemeToggle />
+            <button
+              onClick={() => scrollTo('contact')}
+              className="border border-primary/60 text-primary px-[24px] py-[10px] font-body text-[10px] font-medium tracking-[2px] uppercase rounded-[2px] hover:bg-accent-dim hover:border-primary transition-all duration-300"
+            >
+              Book a Session
+            </button>
+          </div>
 
           {/* Hamburger - mobile */}
           <button
@@ -148,13 +151,23 @@ export default function Navbar() {
             </button>
           );
         })}
+        <div
+          className="flex items-center gap-6"
+          style={{
+            transform: menuOpen ? 'translateY(0) scale(1)' : 'translateY(30px) scale(0.95)',
+            opacity: menuOpen ? 1 : 0,
+            transition: 'all 0.5s cubic-bezier(0.23,1,0.32,1) 0.4s',
+          }}
+        >
+          <ThemeToggle />
+        </div>
         <button
           onClick={() => scrollTo('contact')}
           className="border border-primary/60 text-primary px-10 py-3 font-body text-[11px] tracking-[2px] uppercase mt-4 hover:bg-accent-dim transition-all duration-300"
           style={{
             transform: menuOpen ? 'translateY(0) scale(1)' : 'translateY(30px) scale(0.95)',
             opacity: menuOpen ? 1 : 0,
-            transition: 'all 0.5s cubic-bezier(0.23,1,0.32,1) 0.45s',
+            transition: 'all 0.5s cubic-bezier(0.23,1,0.32,1) 0.5s',
           }}
         >
           Book a Session
