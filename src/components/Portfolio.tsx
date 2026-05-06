@@ -39,10 +39,10 @@ export default function Portfolio() {
         .select('*')
         .order('display_order', { ascending: true });
       if (data && data.length > 0) {
-        setPhotos(data.map((p) => ({
+        setPhotos(data.map((p, idx) => ({
           title: p.title,
           category: p.category,
-          h: 340 + Math.floor(Math.random() * 180),
+          h: 340 + ((idx * 73) % 180),
           img: p.image_url,
         })));
       }
@@ -56,12 +56,19 @@ export default function Portfolio() {
   const closeLightbox = useCallback(() => setLightboxIndex(null), []);
 
   const goNext = useCallback(() => {
-    setLightboxIndex((prev) => (prev !== null ? (prev + 1) % filtered.length : null));
+    setLightboxIndex((prev) => (prev !== null && filtered.length > 0 ? (prev + 1) % filtered.length : null));
   }, [filtered.length]);
 
   const goPrev = useCallback(() => {
-    setLightboxIndex((prev) => (prev !== null ? (prev - 1 + filtered.length) % filtered.length : null));
+    setLightboxIndex((prev) => (prev !== null && filtered.length > 0 ? (prev - 1 + filtered.length) % filtered.length : null));
   }, [filtered.length]);
+
+  // Clamp lightbox index if photo set changes (e.g. data loads after open)
+  useEffect(() => {
+    if (lightboxIndex !== null && lightboxIndex >= filtered.length) {
+      setLightboxIndex(filtered.length > 0 ? 0 : null);
+    }
+  }, [filtered.length, lightboxIndex]);
 
   useEffect(() => {
     if (lightboxIndex === null) return;
